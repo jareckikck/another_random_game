@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/background.css">
+    <!-- 
+    logika  - zareaguj na input
+    fizyki  - policz kolizje
+    grafika - rysuj    
+    player.js, enemy.js, bullet.js, game.js -->
+        <script src="jq.js"></script>
+        <script src="sprite.js"></script>
+        <script src="enemy.js"></script>
+        <script src="bullet.js"></script>
+        <script src="player.js"></script>
+        <script src="game.js"></script>
+ <style>
+.interface{
+    display: block;
+    color: #fff;
+    
+}
+.life, .score{
+    padding: 15px;
+    border: 1px solid black;
+    background: #eee;
+    color: #000;
+}
+</style>
+</head>
+
+<body>
+    
+<div id='stars'></div>
+<div id='stars2'></div>
+<div id='stars3'></div>
+    <div class="interface">
+        life:
+        <span class="life">3</span>
+        score: 
+        <span class="score"></span>        
+    </div>
+   
+
+
+</body>
+</html>
