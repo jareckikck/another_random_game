@@ -96,7 +96,7 @@ function updateEnemies() {
     enemies = enemies.filter(function (enemy) {
         return enemy.active;
     });
-    if (Math.random() < 0.05) {
+    if (Math.random() < 0.010) {
         enemies.push(new Enemy());
 
     }

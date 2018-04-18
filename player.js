@@ -1,3 +1,5 @@
+let Fired = true;
+let canFire = false;
 
 class Player {
   constructor(x, y, width, height, sprite) {
@@ -6,6 +8,7 @@ class Player {
     this.width = width;
     this.height = height;
     this.sprite = Sprite("player");
+    this.fireRate = 5;  //  fireRateCap == FPS 
   }
   draw() {
     this.sprite.draw(canvas, this.x, this.y);
@@ -16,15 +19,15 @@ class Player {
       y: this.y + this.height / 4.5
     };
   }
-  shoot() {
+  spawnBullet() {
     var bulletPosition = this.midpoint();
 
-    playerBullets.push(new Bullet(
-      true,
-      bulletPosition.x,
-      bulletPosition.y,
-      5
-    ));
+  playerBullets.push(new Bullet({
+      active: true,
+      x: bulletPosition.x,
+      y: bulletPosition.y,
+      speed: 15
+    }));
 
   }
   explode() {
@@ -36,7 +39,17 @@ class Player {
     }
     $('.life').text(life);
   }
-
+  shoot() {
+    if (Fired) {
+      player.spawnBullet();
+      Fired = false;
+      setTimeout(function () { canFire = true; }, 1000 / this.fireRate);
+    }
+    if (canFire) {
+      canFire = !canFire;
+      Fired = !Fired;
+    }
+  }
   move() {
     for (var direction in keys) {
       if (!keys.hasOwnProperty(direction)) continue;
@@ -53,13 +66,7 @@ class Player {
         player.y = (player.y <= borderBottom) ? player.y += 5 : player.y;
       }
       if (direction == 69) {
-                
-        if (fireRateDelay < 0 || fireRateDelay == '') {
-          fireRateDelay = defaultFireRateDelay;
-          player.shoot();
-        }
-        fireRateDelay--;
-      
+        player.shoot();
       }
     }
   }
