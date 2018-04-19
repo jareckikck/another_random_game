@@ -2,13 +2,13 @@ let Fired = true;
 let canFire = false;
 
 class Player {
-  constructor(x, y, width, height, sprite) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.sprite = Sprite("player");
-    this.fireRate = 5;  //  fireRateCap == FPS 
+  constructor(p) {
+    this.x = p.x;
+    this.y = p.y;
+    this.width = p.width;
+    this.height = p.height;
+    this.sprite = p.sprite || Sprite("player");
+    this.fireRate = p.fireRate || 5;  //  fireRateCap == FPS 
   }
   draw() {
     this.sprite.draw(canvas, this.x, this.y);
@@ -22,16 +22,12 @@ class Player {
   spawnBullet() {
     var bulletPosition = this.midpoint();
 
-  playerBullets.push(new Bullet({
-      active: true,
-      x: bulletPosition.x,
-      y: bulletPosition.y,
-      speed: 15
-    }));
-
+    playerBullets.push( new Bullet({
+        x: bulletPosition.x,
+        y: bulletPosition.y,        
+      }) );
   }
   explode() {
-    this.active = false;
     life--;
     if (life <= 0) {
       alert('U LOOSE!' + '\n\n score: ' + score);
@@ -39,9 +35,10 @@ class Player {
     }
     $('.life').text(life);
   }
+  
   shoot() {
     if (Fired) {
-      player.spawnBullet();
+      this.spawnBullet();
       Fired = false;
       setTimeout(function () { canFire = true; }, 1000 / this.fireRate);
     }
@@ -72,4 +69,9 @@ class Player {
   }
 }
 
-var player = new Player(50, 270, 20, 30, Sprite('player'));
+var player = new Player({
+  x:50, 
+  y:270, 
+  width:20, 
+  height:30, 
+});

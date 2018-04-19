@@ -1,5 +1,5 @@
 class Enemy {
-    constructor(active, x, y, age, width, height) {
+    constructor(en) {
         this.active = true;
         this.age = Math.floor(Math.random() * 128);
         this.color = "#A2B";
@@ -17,18 +17,27 @@ class Enemy {
     }
 
     update() {
-        var bounds = (this.x >= 0 && this.x <= CANVAS_WIDTH && this.y >= 0 && this.y <= CANVAS_HEIGHT);
+        var bounds = (this.x >= 0 && this.x <= CANVAS_WIDTH && this.y >= 0 && this.y <= CANVAS_HEIGHT); // is in screen
         this.x += this.xVelocity;
         this.y += this.yVelocity;
         this.xVelocity = 10 * Math.sin(this.age * Math.PI / 64);
         this.age++;
         this.active = this.active && bounds;
+        if(!bounds){
+            // enemiesDead++;
+            this.explode()
+            console.log('wall');
+        }
     };
 
     explode() {
         score++;
-        this.active = false;        
+        enemiesDead++;
+        this.active = false; 
+        $('.lvl-kills').text(enemiesDead);      
+        $('.lvl-limit').text(enemiesLimit);      
         $('.score').text(score);
+        console.log('enemiesDead: '+ enemiesDead);
     };
 
 };

@@ -11,6 +11,9 @@ var life = 3;
 var score = 0;
 var fireRateDelay = '';
 defaultFireRateDelay = 20;
+let enemiesSpawned = 0;
+let enemiesLimit = 10;
+let enemiesDead = 0 ;
 // borderTop = borderLeft = 0
 
 //prepare vars to be used
@@ -54,7 +57,7 @@ function clear() {
 }
 
 function update() {
-
+    
     player.move();
     updateBullets();
     updateEnemies();
@@ -96,11 +99,19 @@ function updateEnemies() {
     enemies = enemies.filter(function (enemy) {
         return enemy.active;
     });
-    if (Math.random() < 0.010) {
-        enemies.push(new Enemy());
-
+   
+    if(enemiesSpawned <= enemiesLimit){
+        // console.log('enemiesSpawned: ' + enemiesSpawned);
+    
+        if (Math.random() < 0.010) {
+            enemies.push(new Enemy());
+            enemiesSpawned++;
+        }
+    }else if( enemiesSpawned == enemiesLimit + 1) {
+        console.log('nay');
     }
-
+    //buuuuu
+    $('.lvl-limit').text(enemiesLimit);      
 
 }
 
