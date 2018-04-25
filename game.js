@@ -1,34 +1,36 @@
 /* ///////////////////////////////////////////////////////////////////////////////////////
                                      OnInit    
 /////////////////////////////////////////////////////////////////////////////////////// */
-//init variables
-var CANVAS_WIDTH = 1280;
-var CANVAS_HEIGHT = 720;
-var FPS = 60;
-var borderBottom = CANVAS_HEIGHT - player.height;
-var borderRight = CANVAS_WIDTH - player.width;
-var life = 3;
-var score = 0;
-var fireRateDelay = '';
-defaultFireRateDelay = 20;
-let enemiesSpawned = 0;
-let enemiesLimit = 1;
-let enemiesToAdd = 1;
-let enemiesDead = 0 ;
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//game init
+var CANVAS_WIDTH = 800;
+var CANVAS_HEIGHT = 600;
+var borderBottom = CANVAS_HEIGHT - player.height;
+var borderRight = CANVAS_WIDTH - 3*player.width;
+var FPS = 60;
+
+//lvl init
+let enemiesToAdd = 1;
+let enemiesSpawned = 0;
+let enemiesDead = 0 ;
 
 //declare variables
 var playerBullets = [];
 var enemies = [];
 var keys = {}
 
-let canvasElement = $("<canvas width='" + CANVAS_WIDTH +
-    "' height='" + CANVAS_HEIGHT + "'></canvas");
+let canvasElement = $("<canvas width='" + CANVAS_WIDTH +"' height='" + CANVAS_HEIGHT + "'></canvas");
 let canvas = canvasElement.get(0).getContext("2d");
 
 $(document).ready(function () {
-    $("body").append(canvasElement);
-    $('.live').text(life);
+    $('.game-window').append(canvasElement);
+    
+    appendStat(lvlStat);    
+    appendStat(lifeStat);
+    appendStat(scoreStat);
+    appendStat(enemiesLimitStat);
 });
 
 $(document).keydown(function (e) {
@@ -38,6 +40,7 @@ $(document).keydown(function (e) {
 $(document).keyup(function (e) {
     delete keys[e.keyCode];
 });
+
 /* ///////////////////////////////////////////////////////////////////////////////////////
                                      RunIt    
 /////////////////////////////////////////////////////////////////////////////////////// */
@@ -47,108 +50,3 @@ setInterval(function () {
     update();
     draw();
 }, 1000 / FPS);
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////
-                                     Definitions    
-/////////////////////////////////////////////////////////////////////////////////////// */
-
-function clear() {
-    canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-}
-
-function update() {
-    
-    player.move();
-
-    updateBullets();
-    updateEnemies();
-    updateLvl();
-
-    handleCollisions();
-
-}
-function draw() {
-    player.draw();
-    drawBullets();
-    drawEnemies();
-}
-///////////////////////////////////////////////////////////////////////////////////////////
-
-function drawBullets() {
-    playerBullets.forEach(function (bullet) {
-        canvas.fillStyle = bullet.color;
-        bullet.draw();
-    });
-}
-function drawEnemies() {
-    enemies.forEach(function (enemy) {
-        enemy.draw();
-    });
-}
-function updateBullets() {
-    playerBullets.forEach(function (bullet) {
-        bullet.update();
-    });
-    playerBullets = playerBullets.filter(function (bullet) {
-        return bullet.active;
-    });
-}
-function updateEnemies() {
-    enemies.forEach(function (enemy) {
-        enemy.update();
-    });
-
-    enemies = enemies.filter(function (enemy) {
-        return enemy.active;
-    });
-   
-    if(enemiesSpawned < enemiesLimit){
-        // console.log('enemiesSpawned: ' + enemiesSpawned);
-    
-        if (Math.random() < 0.020) {
-            enemies.push(new Enemy());
-            enemiesSpawned++;
-        }
-    }else if( enemiesSpawned == enemiesLimit ) {
-        
-    }
-    //buuuuu
-    $('.lvl-limit').text(enemiesLimit);      
-
-}
-
-function updateLvl(){
-    if(enemiesLimit === enemiesDead ){
-        enemiesDead = 0 ;
-        enemiesSpawned = 0 ;
-        console.log(enemiesDead );
-        enemiesLimit +=enemiesToAdd;
-        alert('lvl completed!');
-    }
-}
-function collides(a, b) {
-    return a.x < b.x + b.width &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.height &&
-        a.y + a.height > b.y;
-}
-
-function handleCollisions() {
-    enemies.forEach(function (enemy) {
-        if (collides(enemy, player)) {
-            enemy.explode();
-            player.explode();
-        }
-    });
-
-    playerBullets.forEach(function (bullet) {
-        enemies.forEach(function (enemy) {
-            if (collides(bullet, enemy)) {
-                enemy.explode();
-                bullet.explode();
-
-            }
-        });
-    });
-}

@@ -1,0 +1,38 @@
+html{
+    background: black;
+    overflow: hidden;
+}
+
+.game{
+    display: flex;
+}
+
+canvas{
+    border: 10px solid white;   
+	margin-bottom: 1px;
+    overflow: hidden;
+}
+
+.game-interface,
+.game-window{
+    display: flex;
+    overflow: hidden;
+    flex: 0 1 auto;
+    height: 100%;
+}
+label,
+span{
+    width: 100%;
+    display:block;
+}
+label{
+    color: #fff;
+}
+
+span{
+    padding: 15px;
+    border: 1px solid black;
+    background: #eee;
+    color: #000;
+    width: auto;
+}

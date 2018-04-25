@@ -24,21 +24,16 @@ class Enemy {
         this.age++;
         this.active = this.active && bounds;
         if(!bounds){            
-            // score--;
             enemiesSpawned--;
-            // this.explode()
             console.log('wall');
         }
     };
 
     explode() {
-        score++;
+        scoreStat.value++;
         enemiesDead++;
         this.active = false; 
-        // $('.lvl-kills').text(enemiesDead);      
-        $('.lvl-limit').text(enemiesLimit);      
-        $('.score').text(score);
-        console.log('enemiesDead: '+ enemiesDead);
+        appendStat(scoreStat);
     };
 
 };

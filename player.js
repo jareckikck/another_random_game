@@ -60,12 +60,12 @@ class Player {
     }
   }
   explode() {
-    life--;
-    if (life <= 0) {
-      alert('U LOOSE!' + '\n\n score: ' + score);
+    lifeStat.value--;
+    if (lifeStat.value <= 0) {
+      alert('U LOOSE!' + '\n\n score: ' + scoreStat.value);
       location.reload();
     }
-    $('.life').text(life);
+    appendStat(lifeStat);        
   }
 }
 
