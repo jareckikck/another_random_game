@@ -1,7 +1,7 @@
 /* ///////////////////////////////////////////////////////////////////////////////////////
                                      OnInit    
 /////////////////////////////////////////////////////////////////////////////////////// */
-//set vars
+//init variables
 var CANVAS_WIDTH = 1280;
 var CANVAS_HEIGHT = 720;
 var FPS = 60;
@@ -12,11 +12,12 @@ var score = 0;
 var fireRateDelay = '';
 defaultFireRateDelay = 20;
 let enemiesSpawned = 0;
-let enemiesLimit = 10;
+let enemiesLimit = 1;
+let enemiesToAdd = 1;
 let enemiesDead = 0 ;
-// borderTop = borderLeft = 0
 
-//prepare vars to be used
+
+//declare variables
 var playerBullets = [];
 var enemies = [];
 var keys = {}
@@ -59,23 +60,30 @@ function clear() {
 function update() {
     
     player.move();
+
     updateBullets();
     updateEnemies();
-    handleCollisions();
+    updateLvl();
 
+    handleCollisions();
 
 }
 function draw() {
     player.draw();
     drawBullets();
-
     drawEnemies();
 }
+///////////////////////////////////////////////////////////////////////////////////////////
 
 function drawBullets() {
     playerBullets.forEach(function (bullet) {
         canvas.fillStyle = bullet.color;
         bullet.draw();
+    });
+}
+function drawEnemies() {
+    enemies.forEach(function (enemy) {
+        enemy.draw();
     });
 }
 function updateBullets() {
@@ -84,11 +92,6 @@ function updateBullets() {
     });
     playerBullets = playerBullets.filter(function (bullet) {
         return bullet.active;
-    });
-}
-function drawEnemies() {
-    enemies.forEach(function (enemy) {
-        enemy.draw();
     });
 }
 function updateEnemies() {
@@ -100,21 +103,30 @@ function updateEnemies() {
         return enemy.active;
     });
    
-    if(enemiesSpawned <= enemiesLimit){
+    if(enemiesSpawned < enemiesLimit){
         // console.log('enemiesSpawned: ' + enemiesSpawned);
     
-        if (Math.random() < 0.010) {
+        if (Math.random() < 0.020) {
             enemies.push(new Enemy());
             enemiesSpawned++;
         }
-    }else if( enemiesSpawned == enemiesLimit + 1) {
-        console.log('nay');
+    }else if( enemiesSpawned == enemiesLimit ) {
+        
     }
     //buuuuu
     $('.lvl-limit').text(enemiesLimit);      
 
 }
 
+function updateLvl(){
+    if(enemiesLimit === enemiesDead ){
+        enemiesDead = 0 ;
+        enemiesSpawned = 0 ;
+        console.log(enemiesDead );
+        enemiesLimit +=enemiesToAdd;
+        alert('lvl completed!');
+    }
+}
 function collides(a, b) {
     return a.x < b.x + b.width &&
         a.x + a.width > b.x &&

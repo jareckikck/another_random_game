@@ -23,9 +23,10 @@ class Enemy {
         this.xVelocity = 10 * Math.sin(this.age * Math.PI / 64);
         this.age++;
         this.active = this.active && bounds;
-        if(!bounds){
-            // enemiesDead++;
-            this.explode()
+        if(!bounds){            
+            // score--;
+            enemiesSpawned--;
+            // this.explode()
             console.log('wall');
         }
     };
@@ -34,7 +35,7 @@ class Enemy {
         score++;
         enemiesDead++;
         this.active = false; 
-        $('.lvl-kills').text(enemiesDead);      
+        // $('.lvl-kills').text(enemiesDead);      
         $('.lvl-limit').text(enemiesLimit);      
         $('.score').text(score);
         console.log('enemiesDead: '+ enemiesDead);

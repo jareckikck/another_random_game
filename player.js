@@ -22,18 +22,10 @@ class Player {
   spawnBullet() {
     var bulletPosition = this.midpoint();
 
-    playerBullets.push( new Bullet({
-        x: bulletPosition.x,
-        y: bulletPosition.y,        
-      }) );
-  }
-  explode() {
-    life--;
-    if (life <= 0) {
-      alert('U LOOSE!' + '\n\n score: ' + score);
-      location.reload();
-    }
-    $('.life').text(life);
+    playerBullets.push(new Bullet({
+      x: bulletPosition.x,
+      y: bulletPosition.y,
+    }));
   }
   
   shoot() {
@@ -67,11 +59,19 @@ class Player {
       }
     }
   }
+  explode() {
+    life--;
+    if (life <= 0) {
+      alert('U LOOSE!' + '\n\n score: ' + score);
+      location.reload();
+    }
+    $('.life').text(life);
+  }
 }
 
 var player = new Player({
-  x:50, 
-  y:270, 
-  width:20, 
-  height:30, 
+  x: 50,
+  y: 270,
+  width: 20,
+  height: 30,
 });
